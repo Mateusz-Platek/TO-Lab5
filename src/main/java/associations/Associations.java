@@ -6,6 +6,7 @@ import measurementTimestamps.MeasurementTimestamps;
 import measurements.Measurement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Associations {
 
@@ -75,7 +76,13 @@ public class Associations {
     public ArrayList<Association> recursion(ArrayList<Association> associations) {
         associations.sort((o1, o2) -> Double.compare(o2.getgXY(), o1.getgXY()));
 
-        associations.removeIf(association -> association.getgXY() < 0.000000005);
+        Iterator<Association> iterator = associations.iterator();
+        while(iterator.hasNext()) {
+            Association association = iterator.next();
+            if (association.getgXY() < 0.05) {
+                iterator.remove();
+            }
+        }
 
         ArrayList<Association> winningEntity = createB(associations);
 
